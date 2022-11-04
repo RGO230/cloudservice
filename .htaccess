@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteRule ^$ public/ [L]
+RewriteRule ((?s).*) public/$1 [L]
+
+RewriteCond %{HTTP:Authorization} 
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
