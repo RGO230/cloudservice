@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\DirectoryController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,29 +17,20 @@ use App\Http\Controllers\DirectoryController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+use App\Http\Controllers\JWTAuthController;
+Route::get('user/{id}',[App\Http\Controllers\UserController::class,'getUser']);
+Route::post('register', [JWTAuthController::class, 'register']);
+Route::post('login', [JWTAuthController::class, 'login']);
+
+Route::middleware(['jwt.auth']) ->group( function () {
+    Route::post('/file/{user_id}', [App\Http\Controllers\FileController::class, 'uploadfile']);
+    Route::put('/file/{file}', [App\Http\Controllers\FileController::class, 'renamefile']);
+    Route::delete('/file/{file}', [App\Http\Controllers\FileController::class, 'deletefile']);
+    Route::get('/file/{file}', [App\Http\Controllers\FileController::class, 'downloadfile']);
+    Route::get('/file/{user_id}', [App\Http\Controllers\FileController::class, 'getfiles']);
+    Route::post('/directory/{user_id}', [App\Http\Controllers\DirectoryController::class, 'createdirectory']);
+    Route::get('/geturl/{file}', [App\Http\Controllers\FileController::class, 'getPublicUrl']);
+    Route::get('/getweightdir/{directory_id}', [App\Http\Controllers\FileController::class, 'getDirectoryWeight']);
+    Route::get('/getweightdisk/{user_id}', [App\Http\Controllers\FileController::class, 'getDiskWeight']);
+    Route::post('logout', [JWTAuthController::class, 'logout']);
 });
-Route::post('/tokens/create', function (Request $request) {
-    $token = $request->user()->createToken($request->token_name);
-
-    return ['token' => $token->plainTextToken];
-});
-Route::middleware(['auth'])->group(function(){
-  
-});  
-
-Route::group(['middleware'=>'auth:sanctum'],function(){
-   
-});
-
-Route::post('/file/{user_id}', [App\Http\Controllers\FileController::class, 'uploadfile']); 
-Route::put('/file/{file}', [App\Http\Controllers\FileController::class, 'renamefile']);
-Route::delete('/file/{file}', [App\Http\Controllers\FileController::class, 'deletefile']);
-Route::get('/file/{file}', [App\Http\Controllers\FileController::class, 'downloadfile']);
-Route::post('/directory/{user_id}', [App\Http\Controllers\DirectoryController::class, 'createdirectory']); 
-Route::get('/geturl/{file}', [App\Http\Controllers\FileController::class, 'getPublicUrl']);
-Route::get('/getweightdir/{directory_id}', [App\Http\Controllers\FileController::class, 'getDirectoryWeight']);
-Route::get('/getweightdisk/{user_id}', [App\Http\Controllers\FileController::class, 'getDiskWeight']);
-
-

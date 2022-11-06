@@ -64,9 +64,9 @@ class FileController extends Controller
     {
         return Storage::download($file->path);
     }
-    public function getfiles()
+    public function getfiles($user_id)
     {
-        return File::where('user_id', Auth::user()->id)->get();
+        return File::where('user_id', $user_id)->get();
     }
     public function deletefile(File $file)
     {
