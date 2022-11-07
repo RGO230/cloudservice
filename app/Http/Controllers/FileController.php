@@ -76,7 +76,7 @@ class FileController extends Controller
             ]
         );
     }
-    public function getPublicUrl(File $file){#
+    public function getPublicUrl(File $file){
     return response()->json([
         'url'=>Storage::url($file->path)
     ]);
