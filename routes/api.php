@@ -27,7 +27,7 @@ Route::middleware(['jwt.auth']) ->group( function () {
     Route::put('/file/{file}', [App\Http\Controllers\FileController::class, 'renamefile']);
     Route::delete('/file/{file}', [App\Http\Controllers\FileController::class, 'deletefile']);
     Route::get('/file/{file}', [App\Http\Controllers\FileController::class, 'downloadfile']);
-    Route::get('/file/{user_id}', [App\Http\Controllers\FileController::class, 'getfiles']);
+    Route::get('/getfile/{user_id}', [App\Http\Controllers\FileController::class, 'getfiles']);
     Route::post('/directory/{user_id}', [App\Http\Controllers\DirectoryController::class, 'createdirectory']);
     Route::get('/geturl/{file}', [App\Http\Controllers\FileController::class, 'getPublicUrl']);
     Route::get('/getweightdir/{directory_id}', [App\Http\Controllers\FileController::class, 'getDirectoryWeight']);
